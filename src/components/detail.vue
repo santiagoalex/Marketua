@@ -3,14 +3,15 @@
 <template>
     <div>
        <div class="mr-2">
-          <Search/>
+          
       </div>
     </div>
 </template>
 <script>
+import Detail from './detail.vue'
 
 export default {
-    name: 'Home',
+    name: 'Detail',
     components: {
 
   },

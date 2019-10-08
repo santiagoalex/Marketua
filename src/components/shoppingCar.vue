@@ -2,7 +2,7 @@
 
 <template>
     <div>
-        shopping car
+        <h1>shopping car</h1>
     </div>
 </template>
 <script>

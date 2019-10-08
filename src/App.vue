@@ -1,34 +1,72 @@
 <template>
-  <div id="app">
-      <nav>     
-          <router-link to='/'>Home</router-link> 
-          <router-link to='/search'>busqueda</router-link>
-          <router-link to='/shoppingCar'>carrito</router-link>
-          <router-link to='/item'>item</router-link>
-         <router-view /> 
-    </nav>
-  </div>
+  <v-app>
+    <v-app-bar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>Marketua</span>
+      </v-toolbar-title>
+      <div class="mr-2">
+          <Search v-on:formSubmit="list"></Search>
+      </div>
+    </v-app-bar>
+  <v-content>
+    <List  :object='info' 
+    :method='nameSeller'/>    
+    </v-content>
+        <router-view>
+    </router-view>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Home from './components/home.vue';
-import Item from './components/item.vue';
-import ShoppingCar from './components/shoppingCar.vue';
 import Search from './components/search.vue';
-import Vue from 'vue'
-import App from './App.vue'
-import VueRouter from 'vue-router'
-
+import List from './components/list.vue';
 
 export default {
-  name: 'app',
-components: {
-    
+  name: 'App',
+  components: {
+    Home,
+    Search,
+    List,
+  },
+ data: function() {
+    return {
+      marketList: "",
+      userId: "",
+      product: [],
+      price: [],
+      sellerId: [],
+      nameV: [],
+      info: [{}]
+    };
+  },
+
+
+    methods: {
+
+    list: async function(varSearch) {
+    //let Url = "https://api.mercadolibre.com/sites/MCO";
+    let Url = "https://api.mercadolibre.com"; 
+    this.$http
+        .get(`${Url}/sites/MCO/search?q=${varSearch}`)
+        .then(res => {
+            this.info= res.data.results
+        });
+        console.log("despues del get");  
+        console.log(this.info, "aja"); 
+    },
+
+    nameSeller: function(identification){
+        
+      let Url = "https://api.mercadolibre.com";
+      this.$http
+      .get(`${Url}/users/${identification}`)
+      .then(resp => {
+        this.userId=resp.body['nickname'];
+        this.nameV[0]=this.userId;
+      })
+      return  this.nameV[0].toString()
+    }
   }
-}
+};
 </script>
-
-<style>
-
-</style>
